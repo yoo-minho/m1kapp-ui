@@ -8,7 +8,7 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "paths": {
-      "@m1k/ui": ["../src"]
+      "@m1kapp/ui": ["../src"]
     }
   },
   "include": ["src"]

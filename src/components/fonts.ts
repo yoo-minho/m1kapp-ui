@@ -1,5 +1,5 @@
 /**
- * Font presets for @m1k/ui.
+ * Font presets for @m1kapp/ui.
  * These return CSS @import strings to load fonts from official CDNs.
  * No font files are bundled — only references to the original sources.
  */

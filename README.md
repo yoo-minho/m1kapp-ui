@@ -1,4 +1,4 @@
-# @m1k/ui
+# @m1kapp/ui
 
 > Mobile-first app shell for side projects.
 > Build apps that feel like native — in minutes.
@@ -20,7 +20,7 @@
 ## Install
 
 ```bash
-npm install @m1k/ui
+npm install @m1kapp/ui
 ```
 
 ## Quick Start
@@ -38,7 +38,7 @@ import {
   Divider,
   StatChip,
   EmptyState,
-} from "@m1k/ui";
+} from "@m1kapp/ui";
 
 export default function App() {
   const [tab, setTab] = useState("home");
@@ -144,7 +144,7 @@ export default function App() {
 In the AI era, building a side project takes a day.
 But making it *feel* like an app still takes effort.
 
-`@m1k/ui` gives you the mobile app shell — header, scrollable content, bottom tabs, floating on a colored background — so you can focus on what matters: your idea.
+`@m1kapp/ui` gives you the mobile app shell — header, scrollable content, bottom tabs, floating on a colored background — so you can focus on what matters: your idea.
 
 Built and battle-tested in [m1k](https://m1k.app).
 

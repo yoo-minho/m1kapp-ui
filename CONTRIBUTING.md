@@ -1,11 +1,11 @@
-# Contributing to @m1k/ui
+# Contributing to @m1kapp/ui
 
 Thanks for your interest in contributing! Here's how to get started.
 
 ## Development Setup
 
 ```bash
-git clone https://github.com/yoominho/m1k-ui.git
+git clone https://github.com/yoo-minho/m1kapp-ui.git
 cd m1k-ui
 npm install
 npm run dev

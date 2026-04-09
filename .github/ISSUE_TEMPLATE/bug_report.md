@@ -14,7 +14,7 @@ Steps to reproduce the behavior.
 What you expected to happen.
 
 **Environment**
-- @m1k/ui version:
+- @m1kapp/ui version:
 - React version:
 - Tailwind version:
 - Browser:

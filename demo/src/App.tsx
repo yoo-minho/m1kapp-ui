@@ -14,7 +14,7 @@ import {
   colors,
   ThemeButton,
   ThemeDialog,
-} from "@m1k/ui";
+} from "@m1kapp/ui";
 
 const THEMES = Object.entries(colors).map(([name, color]) => ({ name, color }));
 
@@ -38,7 +38,7 @@ const CODE_SNIPPET = `import {
   Watermark, AppShell,
   AppShellHeader, AppShellContent,
   TabBar, Tab, Section, StatChip
-} from "@m1k/ui";
+} from "@m1kapp/ui";
 
 export default function App() {
   const [tab, setTab] = useState("home");
@@ -73,7 +73,7 @@ function HomeTab({ themeColor }: { themeColor: string }) {
     <>
       <Section className="pt-5">
         <h1 className="text-2xl font-black text-zinc-900 dark:text-white tracking-tight">
-          @m1k/ui
+          @m1kapp/ui
         </h1>
         <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1 leading-relaxed">
           Mobile-first app shell for side projects.
@@ -85,7 +85,7 @@ function HomeTab({ themeColor }: { themeColor: string }) {
       <Section className="mt-4">
         <div className="flex gap-2">
           <a
-            href="https://github.com/yoominho/m1k-ui"
+            href="https://github.com/yoo-minho/m1kapp-ui"
             target="_blank"
             rel="noopener noreferrer"
             className="flex-1 py-2.5 rounded-xl bg-zinc-900 dark:bg-zinc-800 text-center text-sm font-semibold text-white transition-colors hover:bg-zinc-800 dark:hover:bg-zinc-700"
@@ -93,10 +93,10 @@ function HomeTab({ themeColor }: { themeColor: string }) {
             GitHub
           </a>
           <button
-            onClick={() => navigator.clipboard.writeText("npm install @m1k/ui")}
+            onClick={() => navigator.clipboard.writeText("npm install @m1kapp/ui")}
             className="flex-1 py-2.5 rounded-xl text-center text-sm font-medium font-mono text-zinc-600 dark:text-zinc-400 bg-zinc-100 dark:bg-zinc-900 transition-colors hover:bg-zinc-200 dark:hover:bg-zinc-800"
           >
-            npm i @m1k/ui
+            npm i @m1kapp/ui
           </button>
         </div>
       </Section>
@@ -107,7 +107,7 @@ function HomeTab({ themeColor }: { themeColor: string }) {
         <SectionHeader>This page is the demo</SectionHeader>
         <p className="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed">
           Everything you see — the header, tabs, sections, stats — is built entirely with{" "}
-          <strong className="text-zinc-700 dark:text-zinc-200">@m1k/ui</strong> components.
+          <strong className="text-zinc-700 dark:text-zinc-200">@m1kapp/ui</strong> components.
           Navigate the tabs to explore.
         </p>
       </Section>
@@ -351,7 +351,7 @@ function ComponentsTab() {
           <ComponentCard
             name="colors"
             desc="Curated color palette for Watermark and Tab"
-            code={`import { colors } from "@m1k/ui";\n\n<Watermark color={colors.blue} />\n<Tab activeColor={colors.pink} />\n\n// All colors:\n// blue, purple, green, orange, pink,\n// red, yellow, cyan, slate, zinc`}
+            code={`import { colors } from "@m1kapp/ui";\n\n<Watermark color={colors.blue} />\n<Tab activeColor={colors.pink} />\n\n// All colors:\n// blue, purple, green, orange, pink,\n// red, yellow, cyan, slate, zinc`}
           >
             <div className="grid grid-cols-5 gap-2">
               {THEMES.map((t) => (
@@ -369,7 +369,7 @@ function ComponentsTab() {
           <ComponentCard
             name="ThemeButton + ThemeDialog"
             desc="Header color button with bottom-sheet picker"
-            code={`import { ThemeButton, ThemeDialog, colors } from "@m1k/ui";\n\nconst [open, setOpen] = useState(false);\nconst [color, setColor] = useState(colors.blue);\n\n<AppShellHeader>\n  <span>myapp</span>\n  <ThemeButton\n    color={color}\n    onClick={() => setOpen(true)}\n  />\n</AppShellHeader>\n\n<ThemeDialog\n  open={open}\n  onClose={() => setOpen(false)}\n  current={color}\n  onSelect={setColor}\n/>`}
+            code={`import { ThemeButton, ThemeDialog, colors } from "@m1kapp/ui";\n\nconst [open, setOpen] = useState(false);\nconst [color, setColor] = useState(colors.blue);\n\n<AppShellHeader>\n  <span>myapp</span>\n  <ThemeButton\n    color={color}\n    onClick={() => setOpen(true)}\n  />\n</AppShellHeader>\n\n<ThemeDialog\n  open={open}\n  onClose={() => setOpen(false)}\n  current={color}\n  onSelect={setColor}\n/>`}
           >
             <div className="flex items-center justify-between">
               <span className="text-xs text-zinc-500">Tap the button →</span>
@@ -380,7 +380,7 @@ function ComponentsTab() {
           <ComponentCard
             name="fonts + fontFamily"
             desc="Font presets with CDN links (no files bundled)"
-            code={`import { fonts, fontFamily } from "@m1k/ui";\n\n// In your HTML:\n<link rel="stylesheet" href={fonts.toss} />\n\n// In your CSS:\nbody {\n  font-family: ${fontFamily.toss.replace(/"/g, "'")}\n}\n\n// Available: toss, pretendard, inter`}
+            code={`import { fonts, fontFamily } from "@m1kapp/ui";\n\n// In your HTML:\n<link rel="stylesheet" href={fonts.toss} />\n\n// In your CSS:\nbody {\n  font-family: ${fontFamily.toss.replace(/"/g, "'")}\n}\n\n// Available: toss, pretendard, inter`}
           >
             <div className="space-y-2">
               {(["toss", "pretendard", "inter"] as const).map((f) => (
@@ -415,10 +415,10 @@ function CodeTab() {
         <SectionHeader>Install</SectionHeader>
         <div
           className="flex items-center justify-between p-3 rounded-xl bg-zinc-50 dark:bg-zinc-900 cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
-          onClick={() => navigator.clipboard.writeText("npm install @m1k/ui")}
+          onClick={() => navigator.clipboard.writeText("npm install @m1kapp/ui")}
         >
           <code className="text-sm font-mono text-zinc-700 dark:text-zinc-300">
-            npm install @m1k/ui
+            npm install @m1kapp/ui
           </code>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-zinc-400">
             <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
@@ -450,8 +450,8 @@ function CodeTab() {
         <SectionHeader>Links</SectionHeader>
         <div className="space-y-2">
           {[
-            { label: "GitHub Repository", url: "https://github.com/yoominho/m1k-ui" },
-            { label: "npm Package", url: "https://www.npmjs.com/package/@m1k/ui" },
+            { label: "GitHub Repository", url: "https://github.com/yoo-minho/m1kapp-ui" },
+            { label: "npm Package", url: "https://www.npmjs.com/package/@m1kapp/ui" },
             { label: "m1k.app", url: "https://m1k.app" },
           ].map((link) => (
             <a
@@ -488,7 +488,7 @@ export default function App() {
         <AppShell>
           <AppShellHeader>
             <span className="text-lg font-black text-zinc-900 dark:text-white tracking-tight">
-              @m1k/ui
+              @m1kapp/ui
             </span>
             <ThemeButton color={themeColor} onClick={() => setThemeOpen(true)} />
           </AppShellHeader>
