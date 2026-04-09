@@ -17,3 +17,12 @@ export type { EmptyStateProps } from "./components/empty-state";
 
 export { Watermark } from "./components/watermark";
 export type { WatermarkProps } from "./components/watermark";
+
+export { colors } from "./components/colors";
+export type { ColorName } from "./components/colors";
+
+export { ThemeButton, ThemeDialog } from "./components/theme-picker";
+export type { ThemeButtonProps, ThemeDialogProps } from "./components/theme-picker";
+
+export { fonts, fontFamily } from "./components/fonts";
+export type { FontName } from "./components/fonts";

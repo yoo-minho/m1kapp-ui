@@ -56,7 +56,7 @@ export interface AppShellContentProps {
  */
 export function AppShellContent({ children, className = "" }: AppShellContentProps) {
   return (
-    <div className={`flex-1 overflow-y-auto ${className}`}>
+    <div className={`flex-1 overflow-y-auto scrollbar-hide ${className}`}>
       {children}
     </div>
   );

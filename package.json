@@ -1,5 +1,5 @@
 {
-  "name": "@m1k/ui",
+  "name": "@m1kapp/ui",
   "version": "0.1.0",
   "description": "Mobile-first app shell UI components for side projects",
   "main": "./dist/index.js",
@@ -18,7 +18,9 @@
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
-    "lint": "tsc --noEmit"
+    "lint": "tsc --noEmit",
+    "demo": "cd demo && npm run dev",
+    "demo:build": "cd demo && npm run build"
   },
   "peerDependencies": {
     "react": ">=18",
@@ -45,7 +47,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/yoominho/m1k-ui"
+    "url": "https://github.com/yoo-minho/m1kapp-ui"
   },
   "homepage": "https://m1k.app"
 }
