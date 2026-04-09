@@ -14,24 +14,26 @@ import {
   colors,
   ThemeButton,
   ThemeDialog,
+  Typewriter,
 } from "@m1kapp/ui";
 
 const THEMES = Object.entries(colors).map(([name, color]) => ({ name, color }));
 
 const COMPONENTS = [
-  { name: "Watermark", desc: "Full-screen colored background with repeating text pattern" },
-  { name: "AppShell", desc: "Mobile app container with rounded corners and shadow" },
-  { name: "AppShellHeader", desc: "Sticky top header with blur backdrop" },
-  { name: "AppShellContent", desc: "Scrollable main content area" },
-  { name: "TabBar", desc: "Sticky bottom navigation bar" },
-  { name: "Tab", desc: "Individual tab button with icon and label" },
-  { name: "Section", desc: "Padded content section wrapper" },
-  { name: "SectionHeader", desc: "Small uppercase section title" },
-  { name: "Divider", desc: "Horizontal separator line" },
-  { name: "StatChip", desc: "Compact stat display with label and number" },
-  { name: "EmptyState", desc: "Placeholder with icon and message" },
-  { name: "ThemeButton", desc: "Circular color button for the header" },
-  { name: "ThemeDialog", desc: "Bottom-sheet color picker dialog" },
+  { name: "Watermark", desc: "배경 패턴이 반복되는 컬러 배경" },
+  { name: "AppShell", desc: "둥근 모서리 + 그림자의 모바일 앱 컨테이너" },
+  { name: "AppShellHeader", desc: "블러 배경의 상단 고정 헤더" },
+  { name: "AppShellContent", desc: "스크롤 가능한 메인 콘텐츠 영역" },
+  { name: "TabBar", desc: "하단 고정 네비게이션 바" },
+  { name: "Tab", desc: "아이콘 + 라벨 탭 버튼" },
+  { name: "Section", desc: "패딩이 적용된 섹션 래퍼" },
+  { name: "SectionHeader", desc: "작은 대문자 섹션 제목" },
+  { name: "Divider", desc: "구분선" },
+  { name: "StatChip", desc: "라벨 + 숫자 통계 칩" },
+  { name: "EmptyState", desc: "아이콘 + 메시지 빈 상태" },
+  { name: "ThemeButton", desc: "헤더용 원형 컬러 버튼" },
+  { name: "ThemeDialog", desc: "바텀시트 컬러 피커" },
+  { name: "Typewriter", desc: "사람처럼 뚜닥뚜닥 타이핑 효과" },
 ];
 
 const CODE_SNIPPET = `import {
@@ -72,13 +74,29 @@ function HomeTab({ themeColor }: { themeColor: string }) {
   return (
     <>
       <Section className="pt-5">
-        <h1 className="text-2xl font-black text-zinc-900 dark:text-white tracking-tight">
-          @m1kapp/ui
-        </h1>
-        <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1 leading-relaxed">
-          Mobile-first app shell for side projects.
+        <div className="flex items-center gap-2">
+          <h1 className="text-2xl font-black text-zinc-900 dark:text-white tracking-tight">
+            @m1kapp/ui
+          </h1>
+          <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-500">
+            v0.1.4
+          </span>
+        </div>
+        <p className="text-lg mt-3 min-h-7">
+          <Typewriter
+            words={[
+              "바이브코딩으로 만든 앱",
+              "주말에 만든 토이 프로젝트",
+              "해커톤에서 만든 서비스",
+              "your side project",
+            ]}
+            color={themeColor}
+          />
+        </p>
+        <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-2 leading-relaxed">
+          사이드 프로젝트를 위한 모바일 앱 셸.
           <br />
-          Build apps that feel like native — in minutes.
+          몇 분 만에 네이티브처럼 느껴지는 앱을 만드세요.
         </p>
       </Section>
 
@@ -104,29 +122,29 @@ function HomeTab({ themeColor }: { themeColor: string }) {
       <Divider />
 
       <Section>
-        <SectionHeader>This page is the demo</SectionHeader>
+        <SectionHeader>이 페이지가 데모예요</SectionHeader>
         <p className="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed">
-          Everything you see — the header, tabs, sections, stats — is built entirely with{" "}
-          <strong className="text-zinc-700 dark:text-zinc-200">@m1kapp/ui</strong> components.
-          Navigate the tabs to explore.
+          지금 보이는 헤더, 탭, 섹션, 통계 칩 — 전부{" "}
+          <strong className="text-zinc-700 dark:text-zinc-200">@m1kapp/ui</strong> 컴포넌트로 만들었어요.
+          탭을 눌러서 둘러보세요.
         </p>
       </Section>
 
       <Divider />
 
       <Section>
-        <SectionHeader>At a glance</SectionHeader>
+        <SectionHeader>한눈에 보기</SectionHeader>
         <div className="flex gap-3">
-          <StatChip label="Components" value={13} />
+          <StatChip label="컴포넌트" value={14} />
           <StatChip label="KB (gzip)" value={2} />
-          <StatChip label="Deps" value={0} />
+          <StatChip label="의존성" value={0} />
         </div>
       </Section>
 
       <Divider />
 
       <Section>
-        <SectionHeader>Requirements</SectionHeader>
+        <SectionHeader>요구사항</SectionHeader>
         <div className="space-y-2">
           {["React 18+", "Tailwind CSS 4+"].map((r) => (
             <div
@@ -178,7 +196,7 @@ function ComponentCard({ name, desc, code, children }: {
         onClick={() => setShowCode(!showCode)}
         className="w-full px-3 py-2 text-[10px] font-medium text-zinc-400 dark:text-zinc-500 border-t border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors text-left"
       >
-        {showCode ? "Hide code" : "Show code"}
+        {showCode ? "코드 숨기기" : "코드 보기"}
       </button>
 
       {/* Code */}
@@ -198,7 +216,7 @@ function ComponentsTab() {
   return (
     <>
       <Section className="pt-5">
-        <SectionHeader>Layout</SectionHeader>
+        <SectionHeader>레이아웃</SectionHeader>
         <div className="space-y-3">
           <ComponentCard
             name="Watermark"
@@ -293,7 +311,7 @@ function ComponentsTab() {
       <Divider />
 
       <Section>
-        <SectionHeader>Content</SectionHeader>
+        <SectionHeader>콘텐츠</SectionHeader>
         <div className="space-y-3">
           <ComponentCard
             name="Section + SectionHeader"
@@ -340,13 +358,26 @@ function ComponentsTab() {
           >
             <EmptyState message="Nothing here yet" />
           </ComponentCard>
+
+          <ComponentCard
+            name="Typewriter"
+            desc="Human-like typing effect with blinking cursor"
+            code={`<Typewriter\n  words={["Hello", "World", "Side Project"]}\n  color="#3b82f6"\n  speed={80}\n/>`}
+          >
+            <p className="text-lg font-bold">
+              <Typewriter
+                words={["Build fast", "Ship faster", "Side project"]}
+                color="#3b82f6"
+              />
+            </p>
+          </ComponentCard>
         </div>
       </Section>
 
       <Divider />
 
       <Section>
-        <SectionHeader>Utilities</SectionHeader>
+        <SectionHeader>유틸리티</SectionHeader>
         <div className="space-y-3">
           <ComponentCard
             name="colors"
@@ -412,7 +443,7 @@ function CodeTab() {
   return (
     <>
       <Section className="pt-5">
-        <SectionHeader>Install</SectionHeader>
+        <SectionHeader>설치</SectionHeader>
         <div
           className="flex items-center justify-between p-3 rounded-xl bg-zinc-50 dark:bg-zinc-900 cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
           onClick={() => navigator.clipboard.writeText("npm install @m1kapp/ui")}
@@ -431,7 +462,7 @@ function CodeTab() {
 
       <Section>
         <div className="flex items-center justify-between mb-3">
-          <SectionHeader>Quick start</SectionHeader>
+          <SectionHeader>빠른 시작</SectionHeader>
           <button
             onClick={handleCopy}
             className="text-xs text-zinc-400 hover:text-zinc-200 transition-colors"
@@ -447,7 +478,7 @@ function CodeTab() {
       <Divider />
 
       <Section className="pb-6">
-        <SectionHeader>Links</SectionHeader>
+        <SectionHeader>링크</SectionHeader>
         <div className="space-y-2">
           {[
             { label: "GitHub Repository", url: "https://github.com/yoo-minho/m1kapp-ui" },
@@ -503,7 +534,7 @@ export default function App() {
             <Tab
               active={tab === "home"}
               onClick={() => setTab("home")}
-              label="Home"
+              label="홈"
               activeColor={themeColor}
               icon={
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -515,7 +546,7 @@ export default function App() {
             <Tab
               active={tab === "components"}
               onClick={() => setTab("components")}
-              label="Components"
+              label="컴포넌트"
               activeColor={themeColor}
               icon={
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -529,7 +560,7 @@ export default function App() {
             <Tab
               active={tab === "code"}
               onClick={() => setTab("code")}
-              label="Code"
+              label="코드"
               activeColor={themeColor}
               icon={
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
