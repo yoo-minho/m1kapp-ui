@@ -26,3 +26,6 @@ export type { ThemeButtonProps, ThemeDialogProps } from "./components/theme-pick
 
 export { fonts, fontFamily } from "./components/fonts";
 export type { FontName } from "./components/fonts";
+
+export { Typewriter } from "./components/typewriter";
+export type { TypewriterProps } from "./components/typewriter";
