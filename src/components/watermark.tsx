@@ -96,13 +96,14 @@ export function Watermark({
       className="h-dvh w-full relative overflow-hidden"
       style={{ backgroundColor: color, transition: "background-color 0.5s ease" }}
     >
-      {/* single DOM layer — m1k + sponsor text, one animation, perfect sync */}
+      {/* background — pointer-events-none on container, auto on each link */}
       <div
-        className="absolute inset-0 pointer-events-none select-none"
+        className="absolute inset-0 select-none"
         style={{
           transformOrigin: "center center",
           animation: speed > 0 ? `watermark-drift ${speed}s linear infinite` : undefined,
           transform: "rotate(-12deg) scale(2)",
+          pointerEvents: "none",
         }}
       >
         {Array.from({ length: rows }).flatMap((_, row) =>
@@ -120,6 +121,8 @@ export function Watermark({
               color: "rgba(255,255,255,0.12)",
               whiteSpace: "nowrap",
               lineHeight: 1,
+              pointerEvents: "auto",
+              cursor: "pointer",
             };
 
             if (isSponsor) {
@@ -130,7 +133,7 @@ export function Watermark({
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:opacity-30 transition-opacity"
-                  style={{ ...commonStyle, fontSize: sponsorFontSize, textDecoration: "none", pointerEvents: "auto" }}
+                  style={{ ...commonStyle, fontSize: sponsorFontSize, textDecoration: "none" }}
                 >
                   {sponsor!.name}
                 </a>
@@ -144,7 +147,7 @@ export function Watermark({
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:opacity-30 transition-opacity"
-                style={{ ...commonStyle, fontSize: textFontSize, textDecoration: "none", pointerEvents: "auto" }}
+                style={{ ...commonStyle, fontSize: textFontSize, textDecoration: "none" }}
               >
                 {text}
               </a>
@@ -153,6 +156,7 @@ export function Watermark({
         )}
       </div>
 
+      {/* content */}
       <div
         className="relative z-10 h-full flex items-center justify-center mx-auto"
         style={{ maxWidth, padding }}

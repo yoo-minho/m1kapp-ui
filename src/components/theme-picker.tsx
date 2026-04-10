@@ -1,4 +1,5 @@
-import { type ReactNode, useState, useEffect } from "react";
+import { useEffect } from "react";
+import { createPortal } from "react-dom";
 import { colors } from "./colors";
 
 export interface ThemeButtonProps {
@@ -18,7 +19,7 @@ export function ThemeButton({ color, dark = false, onClick, className = "" }: Th
   return (
     <button
       onClick={onClick}
-      className={`w-7 h-7 rounded-full transition-all active:scale-90 hover:scale-110 overflow-hidden ${className}`}
+      className={`w-7 h-7 rounded-full transition-all active:scale-90 hover:scale-110 overflow-hidden cursor-pointer ${className}`}
       style={{ boxShadow: `0 2px 10px ${color}55` }}
       title="Theme"
     >
@@ -67,15 +68,15 @@ export function ThemeDialog({
     return () => window.removeEventListener("keydown", handler);
   }, [open, onClose]);
 
-  if (!open) return null;
+  if (!open || typeof document === "undefined") return null;
 
   const entries = Object.entries(palette);
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center" onClick={onClose}>
+  return createPortal(
+    <div className="fixed inset-0 z-[9999] flex items-end justify-center" onClick={onClose}>
       <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
       <div
-        className="relative z-10 w-full max-w-101.5 mb-3 mx-3 rounded-2xl bg-white dark:bg-zinc-900 shadow-2xl overflow-hidden"
+        className="relative z-10 w-full max-w-[430px] mb-3 mx-3 rounded-2xl bg-white dark:bg-zinc-900 shadow-2xl overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="px-4 pt-4 pb-3">
@@ -123,7 +124,7 @@ export function ThemeDialog({
         </div>
 
         <div className="px-4 pb-3 grid grid-cols-5 gap-3 justify-items-center">
-          {entries.map(([name, value]) => (
+          {entries.map(([, value]) => (
             <button
               key={value}
               onClick={() => {
@@ -158,6 +159,7 @@ export function ThemeDialog({
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
