@@ -39,7 +39,7 @@ export interface AppShellHeaderProps {
 export function AppShellHeader({ children, className = "" }: AppShellHeaderProps) {
   return (
     <header
-      className={`sticky top-0 z-20 px-4 py-3 flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800 bg-white/90 dark:bg-zinc-950/90 backdrop-blur-md rounded-t-2xl ${className}`}
+      className={`sticky top-0 z-20 h-14 px-4 flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800 bg-white/90 dark:bg-zinc-950/90 backdrop-blur-md rounded-t-2xl ${className}`}
     >
       {children}
     </header>

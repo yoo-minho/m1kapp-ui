@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Watermark,
   AppShell,
@@ -14,6 +14,9 @@ import {
   colors,
   ThemeButton,
   ThemeDialog,
+  EmojiButton,
+  EmojiPicker,
+  Tooltip,
   Typewriter,
   fontFamily,
 } from "@m1kapp/ui";
@@ -163,8 +166,47 @@ function HomeTab({ themeColor }: { themeColor: string }) {
         </div>
       </Section>
 
+      <Divider />
+
+      <Section>
+        <SectionHeader>도움주신분들</SectionHeader>
+        <EmojiPlayground />
+      </Section>
+
       <div className="pb-6" />
     </>
+  );
+}
+
+/* ── Emoji Playground ── */
+const PLAYGROUND_EMOJIS = [
+  { em: "🦙", name: "A로 시작하는 Alpaca" },
+  { em: "🐻", name: "B로 시작하는 Bear" },
+  { em: "🐈", name: "C로 시작하는 Cat" },
+  { em: "🐬", name: "D로 시작하는 Dolphin" },
+  { em: "🦅", name: "E로 시작하는 Eagle" },
+  { em: "🦊", name: "F로 시작하는 Fox" },
+  { em: "🦍", name: "G로 시작하는 Gorilla" },
+  { em: "🦛", name: "H로 시작하는 Hippo" },
+  { em: "🦎", name: "I로 시작하는 Iguana" },
+  { em: "🐆", name: "J로 시작하는 Jaguar" },
+  { em: "🦘", name: "K로 시작하는 Kangaroo" },
+  { em: "🦁", name: "L로 시작하는 Lion" },
+  { em: "🐒", name: "M로 시작하는 Monkey" },
+  { em: "🦭", name: "N로 시작하는 Narwhal" },
+];
+
+function EmojiPlayground() {
+  return (
+    <div className="flex flex-wrap gap-2">
+      {PLAYGROUND_EMOJIS.map(({ em, name }) => (
+        <Tooltip key={em} label={name}>
+          <div className="w-10 h-10 rounded-full bg-zinc-100 dark:bg-zinc-800 border-2 border-white dark:border-zinc-900 flex items-center justify-center text-xl cursor-pointer hover:scale-110 transition-transform shadow-sm -ml-1 first:ml-0">
+            {em}
+          </div>
+        </Tooltip>
+      ))}
+    </div>
   );
 }
 
@@ -210,8 +252,27 @@ function ComponentCard({ name, desc, code, children }: {
   );
 }
 
+function EmojiPickerDemo() {
+  const [open, setOpen] = useState(false);
+  const [emoji, setEmoji] = useState("🏠");
+  return (
+    <>
+      <div className="flex items-center justify-between">
+        <span className="text-xs text-zinc-500">Tap the button →</span>
+        <EmojiButton emoji={emoji} onClick={() => setOpen(true)} />
+      </div>
+      <EmojiPicker
+        open={open}
+        onClose={() => setOpen(false)}
+        current={emoji}
+        onSelect={setEmoji}
+      />
+    </>
+  );
+}
+
 /* ── Tab: Components ── */
-function ComponentsTab() {
+function ComponentsTab({ themeColor }: { themeColor: string }) {
   const [demoTab, setDemoTab] = useState("home");
 
   return (
@@ -222,11 +283,11 @@ function ComponentsTab() {
           <ComponentCard
             name="Watermark"
             desc="Full-screen colored background with repeating text pattern"
-            code={`<Watermark color="#3b82f6" text="myapp">\n  {children}\n</Watermark>`}
+            code={`<Watermark color="${themeColor}" text="myapp">\n  {children}\n</Watermark>`}
           >
             <div
               className="h-24 rounded-lg relative overflow-hidden"
-              style={{ backgroundColor: "#3b82f6" }}
+              style={{ backgroundColor: themeColor }}
             >
               <div
                 className="absolute inset-0 pointer-events-none select-none opacity-15"
@@ -410,12 +471,20 @@ function ComponentsTab() {
           </ComponentCard>
 
           <ComponentCard
+            name="EmojiButton + EmojiPicker"
+            desc="이모지 선택 버튼 + 카테고리별 바텀시트 피커"
+            code={`import { EmojiButton, EmojiPicker } from "@m1kapp/ui";\n\nconst [open, setOpen] = useState(false);\nconst [emoji, setEmoji] = useState("🏠");\n\n<EmojiButton emoji={emoji} onClick={() => setOpen(true)} />\n\n<EmojiPicker\n  open={open}\n  onClose={() => setOpen(false)}\n  current={emoji}\n  onSelect={setEmoji}\n/>`}
+          >
+            <EmojiPickerDemo />
+          </ComponentCard>
+
+          <ComponentCard
             name="fonts + fontFamily"
             desc="Font presets with CDN links (no files bundled)"
-            code={`import { fonts, fontFamily } from "@m1kapp/ui";\n\n// In your HTML:\n<link rel="stylesheet" href={fonts.toss} />\n\n// In your CSS:\nbody {\n  font-family: ${fontFamily.toss.replace(/"/g, "'")}\n}\n\n// Available: toss, pretendard, inter`}
+            code={`import { fonts, fontFamily } from "@m1kapp/ui";\n\n// index.html:\n<link rel="stylesheet" href={fonts.tossface} />\n<link rel="stylesheet" href={fonts.pretendard} />\n\n// global CSS:\nhtml {\n  font-family: ${fontFamily.default.replace(/"/g, "'")}\n}`}
           >
             <div className="space-y-2">
-              {(["toss", "pretendard", "inter"] as const).map((f) => (
+              {(["tossface", "pretendard", "inter"] as const).map((f) => (
                 <div key={f} className="flex items-center justify-between p-2 rounded-lg bg-white dark:bg-zinc-950">
                   <span className="text-sm font-semibold text-zinc-700 dark:text-zinc-300 capitalize">{f}</span>
                   <span className="text-[10px] text-zinc-400 font-mono">fonts.{f}</span>
@@ -513,21 +582,29 @@ export default function App() {
   const [tab, setTab] = useState("home");
   const [themeColor, setThemeColor] = useState(colors.blue);
   const [themeOpen, setThemeOpen] = useState(false);
+  const [dark, setDark] = useState(() =>
+    typeof window !== "undefined" &&
+    window.matchMedia("(prefers-color-scheme: dark)").matches
+  );
+
+  useEffect(() => {
+    document.documentElement.classList.toggle("dark", dark);
+  }, [dark]);
 
   return (
     <>
-      <Watermark color={themeColor} text="m1k">
+      <Watermark color={themeColor} text="m1k" sponsor={{ name: "@m1kapp/ui", url: "https://github.com/m1kapp/ui" }}>
         <AppShell>
           <AppShellHeader>
             <span className="text-lg font-black text-zinc-900 dark:text-white tracking-tight">
               @m1kapp/ui
             </span>
-            <ThemeButton color={themeColor} onClick={() => setThemeOpen(true)} />
+            <ThemeButton color={themeColor} dark={dark} onClick={() => setThemeOpen(true)} />
           </AppShellHeader>
 
           <AppShellContent>
             {tab === "home" && <HomeTab themeColor={themeColor} />}
-            {tab === "components" && <ComponentsTab />}
+            {tab === "components" && <ComponentsTab themeColor={themeColor} />}
             {tab === "code" && <CodeTab />}
           </AppShellContent>
 
@@ -579,6 +656,8 @@ export default function App() {
         onClose={() => setThemeOpen(false)}
         current={themeColor}
         onSelect={setThemeColor}
+        dark={dark}
+        onDarkToggle={() => setDark((v) => !v)}
       />
     </>
   );

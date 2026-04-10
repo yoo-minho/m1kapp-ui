@@ -16,7 +16,7 @@ export { EmptyState } from "./components/empty-state";
 export type { EmptyStateProps } from "./components/empty-state";
 
 export { Watermark } from "./components/watermark";
-export type { WatermarkProps } from "./components/watermark";
+export type { WatermarkProps, WatermarkSponsor } from "./components/watermark";
 
 export { colors } from "./components/colors";
 export type { ColorName } from "./components/colors";
@@ -29,3 +29,9 @@ export type { FontName } from "./components/fonts";
 
 export { Typewriter } from "./components/typewriter";
 export type { TypewriterProps } from "./components/typewriter";
+
+export { EmojiButton, EmojiPicker } from "./components/emoji-picker";
+export type { EmojiButtonProps, EmojiPickerProps } from "./components/emoji-picker";
+
+export { Tooltip } from "./components/tooltip";
+export type { TooltipProps } from "./components/tooltip";
