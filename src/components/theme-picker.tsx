@@ -94,18 +94,18 @@ export function ThemeDialog({
                     onClick={() => { if (!active) onDarkToggle(); }}
                     className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-2xl transition-all ${
                       active
-                        ? "bg-zinc-900 dark:bg-white"
+                        ? "bg-zinc-900 dark:bg-white ring-2 ring-zinc-900 dark:ring-white ring-offset-2 ring-offset-white dark:ring-offset-zinc-900"
                         : "bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700"
                     }`}
                   >
                     {mode.isDark ? (
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill={active ? "white" : "#71717a"}>
+                      <svg width="15" height="15" viewBox="-1 -1 26 26" fill={active ? "#18181b" : "#71717a"}>
                         <path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z" />
                       </svg>
                     ) : (
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill={active ? "#18181b" : "#71717a"}>
+                      <svg width="15" height="15" viewBox="-1 -1 26 26" fill={active ? "white" : "#71717a"}>
                         <circle cx="12" cy="12" r="5" />
-                        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke={active ? "#18181b" : "#71717a"} strokeWidth="2" strokeLinecap="round" />
+                        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke={active ? "white" : "#71717a"} strokeWidth="2" strokeLinecap="round" />
                       </svg>
                     )}
                     <span className={`text-sm font-semibold ${
@@ -130,14 +130,12 @@ export function ThemeDialog({
                 onSelect(value);
                 onClose();
               }}
-              className={`relative w-11 h-11 rounded-full transition-all hover:scale-110 ${
-                current === value
-                  ? "ring-2 ring-offset-2 ring-offset-white dark:ring-offset-zinc-900"
-                  : ""
-              }`}
+              className="relative w-11 h-11 rounded-full transition-all hover:scale-110"
               style={{
                 backgroundColor: value,
-                ...(current === value ? { ["--tw-ring-color" as string]: value } : {}),
+                boxShadow: current === value
+                  ? `0 0 0 2px #fff, 0 0 0 4px ${value}`
+                  : `0 0 0 1.5px rgba(255,255,255,0.5), 0 2px 8px rgba(255,255,255,0.2)`,
               }}
             >
               {current === value && (

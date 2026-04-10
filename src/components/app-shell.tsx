@@ -20,7 +20,7 @@ export function AppShell({
 }: AppShellProps) {
   return (
     <div
-      className={`w-full h-full flex flex-col bg-white dark:bg-zinc-950 shadow-2xl ring-1 ring-black/5 dark:ring-white/10 rounded-2xl overflow-hidden ${className}`}
+      className={`w-full h-full flex flex-col bg-white dark:bg-zinc-950 shadow-2xl ring-1 ring-black/10 dark:ring-zinc-700 rounded-2xl overflow-hidden ${className}`}
       style={{ maxWidth, ...style }}
     >
       {children}

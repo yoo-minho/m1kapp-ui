@@ -110,13 +110,13 @@ function HomeTab({ themeColor }: { themeColor: string }) {
             href="https://github.com/yoo-minho/m1kapp-ui"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex-1 py-2.5 rounded-xl bg-zinc-900 dark:bg-zinc-800 text-center text-sm font-semibold text-white transition-colors hover:bg-zinc-800 dark:hover:bg-zinc-700"
+            className="flex-1 py-2.5 rounded-xl bg-zinc-900 dark:bg-zinc-800 text-center text-sm font-semibold text-white transition-colors hover:bg-zinc-800 dark:hover:bg-zinc-700 ring-1 ring-white/10"
           >
             GitHub
           </a>
           <button
             onClick={() => navigator.clipboard.writeText("npm install @m1kapp/ui")}
-            className="flex-1 py-2.5 rounded-xl text-center text-sm font-medium font-mono text-zinc-600 dark:text-zinc-400 bg-zinc-100 dark:bg-zinc-900 transition-colors hover:bg-zinc-200 dark:hover:bg-zinc-800"
+            className="flex-1 py-2.5 rounded-xl text-center text-sm font-medium font-mono text-zinc-600 dark:text-zinc-400 bg-zinc-100 dark:bg-zinc-900 transition-colors hover:bg-zinc-200 dark:hover:bg-zinc-800 ring-1 ring-zinc-200 dark:ring-white/10"
           >
             npm i @m1kapp/ui
           </button>
@@ -272,7 +272,7 @@ function EmojiPickerDemo() {
 }
 
 /* ── Tab: Components ── */
-function ComponentsTab({ themeColor }: { themeColor: string }) {
+function ComponentsTab({ themeColor, dark, onThemeSelect }: { themeColor: string; dark: boolean; onThemeSelect: (color: string) => void }) {
   const [demoTab, setDemoTab] = useState("home");
 
   return (
@@ -310,61 +310,60 @@ function ComponentsTab({ themeColor }: { themeColor: string }) {
             desc="Mobile app container with rounded corners, shadow, and ring"
             code={`<AppShell maxWidth={430}>\n  <AppShellHeader>...</AppShellHeader>\n  <AppShellContent>...</AppShellContent>\n  <TabBar>...</TabBar>\n</AppShell>`}
           >
-            <div className="w-full rounded-xl bg-white dark:bg-zinc-950 shadow-lg ring-1 ring-black/5 dark:ring-white/10 overflow-hidden">
-              <div className="px-3 py-2 border-b border-zinc-100 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/50 text-xs font-bold text-zinc-400">
-                Header
-              </div>
-              <div className="px-3 py-4 text-xs text-zinc-400 text-center">
-                Content
-              </div>
-              <div className="px-3 py-2 border-t border-zinc-100 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/50 text-xs text-zinc-400 text-center">
-                TabBar
-              </div>
+            <div className="h-32">
+              <AppShell>
+                <AppShellHeader>
+                  <span className="text-xs font-bold text-zinc-900 dark:text-white">myapp</span>
+                  <span className="text-[10px] text-zinc-400">header</span>
+                </AppShellHeader>
+                <AppShellContent>
+                  <div className="flex items-center justify-center h-full text-xs text-zinc-400 py-2">
+                    content
+                  </div>
+                </AppShellContent>
+                <TabBar>
+                  <Tab active onClick={() => {}} label="Home" activeColor={themeColor} icon={<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /><polyline points="9 22 9 12 15 12 15 22" /></svg>} />
+                  <Tab active={false} onClick={() => {}} label="More" activeColor={themeColor} icon={<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="1" /><circle cx="19" cy="12" r="1" /><circle cx="5" cy="12" r="1" /></svg>} />
+                </TabBar>
+              </AppShell>
             </div>
           </ComponentCard>
 
           <ComponentCard
             name="AppShellHeader"
             desc="Sticky top header with blur backdrop"
-            code={`<AppShellHeader>\n  <span className="font-bold">myapp</span>\n  <button>Menu</button>\n</AppShellHeader>`}
+            code={`<AppShellHeader>\n  <span className="font-bold">myapp</span>\n  <ThemeButton color={color} onClick={...} />\n</AppShellHeader>`}
           >
-            <div className="rounded-lg overflow-hidden border border-zinc-200 dark:border-zinc-800">
-              <div className="px-3 py-2.5 flex items-center justify-between bg-white/90 dark:bg-zinc-950/90 backdrop-blur-md border-b border-zinc-100 dark:border-zinc-800">
+            <div className="h-14 rounded-2xl overflow-hidden">
+              <AppShellHeader>
                 <span className="text-sm font-bold text-zinc-900 dark:text-white">myapp</span>
-                <span className="text-xs text-zinc-400">sticky + blur</span>
-              </div>
-              <div className="h-12 bg-zinc-50 dark:bg-zinc-900 flex items-center justify-center text-xs text-zinc-400">
-                content scrolls under
-              </div>
+                <ThemeButton color={themeColor} dark={dark} onClick={() => {}} />
+              </AppShellHeader>
             </div>
           </ComponentCard>
 
           <ComponentCard
             name="TabBar + Tab"
             desc="Sticky bottom navigation with active state"
-            code={`<TabBar>\n  <Tab\n    active={tab === "home"}\n    onClick={() => setTab("home")}\n    label="Home"\n    icon={<HomeIcon />}\n    activeColor="#3b82f6"\n  />\n</TabBar>`}
+            code={`<TabBar>\n  <Tab\n    active={tab === "home"}\n    onClick={() => setTab("home")}\n    label="Home"\n    icon={<HomeIcon />}\n    activeColor="${themeColor}"\n  />\n</TabBar>`}
           >
             <div className="rounded-lg overflow-hidden border border-zinc-200 dark:border-zinc-800">
-              <nav className="flex bg-white/90 dark:bg-zinc-950/90 backdrop-blur-md">
+              <TabBar>
                 {[
-                  { label: "Home", active: true },
-                  { label: "Search", active: false },
-                  { label: "Profile", active: false },
+                  { key: "home", label: "Home", icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /><polyline points="9 22 9 12 15 12 15 22" /></svg> },
+                  { key: "search", label: "Search", icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /></svg> },
+                  { key: "profile", label: "Profile", icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg> },
                 ].map((t) => (
-                  <button
-                    key={t.label}
-                    onClick={() => setDemoTab(t.label.toLowerCase())}
-                    className={`flex-1 flex flex-col items-center gap-0.5 py-2 transition-colors ${
-                      (demoTab === t.label.toLowerCase() || (demoTab === "home" && t.active))
-                        ? "text-blue-500"
-                        : "text-zinc-300 dark:text-zinc-600"
-                    }`}
-                  >
-                    <div className="w-4 h-4 rounded-full border-2 border-current" />
-                    <span className="text-[10px] font-medium">{t.label}</span>
-                  </button>
+                  <Tab
+                    key={t.key}
+                    active={demoTab === t.key || (demoTab === "home" && t.key === "home")}
+                    onClick={() => setDemoTab(t.key)}
+                    label={t.label}
+                    icon={t.icon}
+                    activeColor={themeColor}
+                  />
                 ))}
-              </nav>
+              </TabBar>
             </div>
           </ComponentCard>
         </div>
@@ -446,13 +445,27 @@ function ComponentsTab({ themeColor }: { themeColor: string }) {
             desc="Curated color palette for Watermark and Tab"
             code={`import { colors } from "@m1kapp/ui";\n\n<Watermark color={colors.blue} />\n<Tab activeColor={colors.pink} />\n\n// All colors:\n// blue, purple, green, orange, pink,\n// red, yellow, cyan, slate, zinc`}
           >
-            <div className="grid grid-cols-5 gap-2">
+            <div className="grid grid-cols-5 gap-3 justify-items-center">
               {THEMES.map((t) => (
-                <div key={t.color} className="flex flex-col items-center gap-1">
-                  <div
-                    className="w-8 h-8 rounded-full"
-                    style={{ backgroundColor: t.color }}
-                  />
+                <div key={t.color} className="flex flex-col items-center gap-1.5">
+                  <button
+                    className="relative w-11 h-11 rounded-full transition-all hover:scale-110 active:scale-95"
+                    onClick={() => onThemeSelect(t.color)}
+                    style={{
+                      backgroundColor: t.color,
+                      boxShadow: themeColor === t.color
+                        ? `0 0 0 2px #fff, 0 0 0 4px ${t.color}`
+                        : `0 0 0 1.5px rgba(255,255,255,0.5), 0 2px 8px rgba(255,255,255,0.2)`,
+                    }}
+                  >
+                    {themeColor === t.color && (
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                          <polyline points="20 6 9 17 4 12" />
+                        </svg>
+                      </div>
+                    )}
+                  </button>
                   <span className="text-[9px] text-zinc-400 capitalize">{t.name}</span>
                 </div>
               ))}
@@ -466,7 +479,7 @@ function ComponentsTab({ themeColor }: { themeColor: string }) {
           >
             <div className="flex items-center justify-between">
               <span className="text-xs text-zinc-500">Tap the button →</span>
-              <ThemeButton color={colors.blue} onClick={() => {}} />
+              <ThemeButton color={themeColor} dark={dark} onClick={() => {}} />
             </div>
           </ComponentCard>
 
@@ -604,7 +617,7 @@ export default function App() {
 
           <AppShellContent>
             {tab === "home" && <HomeTab themeColor={themeColor} />}
-            {tab === "components" && <ComponentsTab themeColor={themeColor} />}
+            {tab === "components" && <ComponentsTab themeColor={themeColor} dark={dark} onThemeSelect={setThemeColor} />}
             {tab === "code" && <CodeTab />}
           </AppShellContent>
 

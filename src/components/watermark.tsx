@@ -1,9 +1,9 @@
 import { type ReactNode } from "react";
 
 export interface WatermarkSponsor {
-  /** Service name displayed in the background, interleaved with the watermark text */
+  /** Service name displayed in the background as clickable text */
   name: string;
-  /** URL to navigate to when the background is clicked */
+  /** URL to navigate to when the sponsor text is clicked */
   url: string;
 }
 
@@ -22,9 +22,8 @@ export interface WatermarkProps {
   padding?: number;
   /**
    * 1k milestone sponsor slot.
-   * When provided, the sponsor's name is interleaved with the watermark text
-   * across the background. The entire background becomes a clickable link
-   * pointing to `sponsor.url`.
+   * The sponsor's name is interleaved with the watermark text across the
+   * background. Only the sponsor text is clickable (not the whole background).
    *
    * Font size auto-scales based on text length (14–28px).
    *
@@ -50,25 +49,10 @@ export interface WatermarkProps {
   speed?: number;
 }
 
-function buildSvgTile(texts: { value: string; x: number; y: number }[]): string {
-  const w = 260;
-  const h = 140;
-  const items = texts
-    .map(
-      ({ value, x, y }) => {
-        const fontSize = Math.max(14, Math.min(28, Math.floor(160 / value.length)));
-        return `<text x="${x}" y="${y}" font-family="system-ui,sans-serif" font-size="${fontSize}" font-weight="900" fill="white" opacity="0.1">${value}</text>`;
-      }
-    )
-    .join("\n");
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}">${items}</svg>`;
-  return `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
-}
-
 const KEYFRAMES = `
 @keyframes watermark-drift {
-  0%   { background-position: 0 0; }
-  100% { background-position: 260px 140px; }
+  0%   { transform: rotate(-12deg) scale(2) translate(0, 0); }
+  100% { transform: rotate(-12deg) scale(2) translate(180px, 100px); }
 }
 `;
 
@@ -83,8 +67,6 @@ function injectStyle() {
 
 /**
  * Full-screen colored background with repeating animated text watermark pattern.
- * Supports a sponsor prop — 1k milestone reward where the service name is
- * interleaved with "m1k" across the background, with a clickable link.
  */
 export function Watermark({
   children,
@@ -97,44 +79,79 @@ export function Watermark({
 }: WatermarkProps) {
   injectStyle();
 
-  const tiles = sponsor
-    ? [
-        { value: text,         x: 10,  y: 50  },
-        { value: sponsor.name, x: 130, y: 110 },
-      ]
-    : [
-        { value: text, x: 10,  y: 50  },
-        { value: text, x: 130, y: 110 },
-      ];
+  const textFontSize = Math.max(14, Math.min(28, Math.floor(160 / text.length)));
+  const sponsorFontSize = sponsor
+    ? Math.max(14, Math.min(28, Math.floor(160 / sponsor.name.length)))
+    : textFontSize;
+
+  const tileW = 180;
+  const tileH = 100;
+  const cols = 16;
+  const rows = 16;
+  const offsetX = (cols * tileW) / 2;
+  const offsetY = (rows * tileH) / 2;
 
   return (
     <div
       className="h-dvh w-full relative overflow-hidden"
       style={{ backgroundColor: color, transition: "background-color 0.5s ease" }}
     >
-      {/* animated watermark layer */}
+      {/* single DOM layer — m1k + sponsor text, one animation, perfect sync */}
       <div
         className="absolute inset-0 pointer-events-none select-none"
         style={{
-          backgroundImage: buildSvgTile(tiles),
-          backgroundRepeat: "repeat",
-          transform: "rotate(-12deg) scale(2)",
           transformOrigin: "center center",
           animation: speed > 0 ? `watermark-drift ${speed}s linear infinite` : undefined,
+          transform: "rotate(-12deg) scale(2)",
         }}
-      />
+      >
+        {Array.from({ length: rows }).flatMap((_, row) =>
+          Array.from({ length: cols }).map((_, col) => {
+            const x = col * tileW - offsetX + tileW / 2;
+            const y = row * tileH - offsetY + tileH / 2;
+            const isSponsor = (row + col) % 2 === 1 && sponsor;
 
-      {/* sponsor clickable overlay (same pattern, transparent, pointer-events on) */}
-      {sponsor && (
-        <a
-          href={sponsor.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="absolute inset-0 z-1"
-          aria-label={`${sponsor.name} — 1k sponsor`}
-          style={{ cursor: "pointer" }}
-        />
-      )}
+            const commonStyle: React.CSSProperties = {
+              position: "absolute",
+              left: x,
+              top: y,
+              transform: "translate(-50%, -50%)",
+              fontWeight: 900,
+              color: "rgba(255,255,255,0.12)",
+              whiteSpace: "nowrap",
+              lineHeight: 1,
+            };
+
+            if (isSponsor) {
+              return (
+                <a
+                  key={`${row}-${col}`}
+                  href={sponsor!.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:opacity-30 transition-opacity"
+                  style={{ ...commonStyle, fontSize: sponsorFontSize, textDecoration: "none", pointerEvents: "auto" }}
+                >
+                  {sponsor!.name}
+                </a>
+              );
+            }
+
+            return (
+              <a
+                key={`${row}-${col}`}
+                href="https://m1k.app"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:opacity-30 transition-opacity"
+                style={{ ...commonStyle, fontSize: textFontSize, textDecoration: "none", pointerEvents: "auto" }}
+              >
+                {text}
+              </a>
+            );
+          })
+        )}
+      </div>
 
       <div
         className="relative z-10 h-full flex items-center justify-center mx-auto"
