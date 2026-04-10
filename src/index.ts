@@ -1,3 +1,5 @@
+import "./inject-styles";
+
 export { AppShell, AppShellHeader, AppShellContent } from "./components/app-shell";
 export type { AppShellProps, AppShellHeaderProps, AppShellContentProps } from "./components/app-shell";
 

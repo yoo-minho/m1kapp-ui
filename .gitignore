@@ -4,3 +4,5 @@ dist
 demo/dist
 demo/node_modules
 .npmrc
+.tmp
+src/_compiled-styles.ts
