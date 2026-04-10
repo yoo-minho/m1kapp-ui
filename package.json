@@ -1,6 +1,6 @@
 {
   "name": "@m1kapp/ui",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Mobile-first app shell UI components for side projects",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
