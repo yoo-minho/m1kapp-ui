@@ -47,7 +47,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/m1kapp/ui"
+    "url": "git+https://github.com/m1kapp/ui.git"
   },
   "homepage": "https://m1k.app"
 }
