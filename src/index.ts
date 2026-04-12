@@ -37,3 +37,6 @@ export type { EmojiButtonProps, EmojiPickerProps } from "./components/emoji-pick
 
 export { Tooltip } from "./components/tooltip";
 export type { TooltipProps } from "./components/tooltip";
+
+export { GrassMap } from "./components/grass-map";
+export type { GrassMapProps, GrassMapData } from "./components/grass-map";
