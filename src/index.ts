@@ -23,7 +23,7 @@ export type { WatermarkProps, WatermarkSponsor } from "./components/watermark";
 export { colors } from "./components/colors";
 export type { ColorName } from "./components/colors";
 
-export { ThemeButton, ThemeDialog } from "./components/theme-picker";
+export { ThemeButton, ThemeDialog, THEME_SCRIPT } from "./components/theme-picker";
 export type { ThemeButtonProps, ThemeDialogProps } from "./components/theme-picker";
 
 export { fonts, fontFamily } from "./components/fonts";

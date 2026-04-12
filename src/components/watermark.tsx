@@ -50,6 +50,7 @@ export interface WatermarkProps {
 }
 
 const KEYFRAMES = `
+html { height: 100dvh; }
 @keyframes watermark-drift {
   0%   { transform: rotate(-12deg) scale(2) translate(0, 0); }
   100% { transform: rotate(-12deg) scale(2) translate(180px, 100px); }

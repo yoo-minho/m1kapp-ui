@@ -1,6 +1,47 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { colors } from "./colors";
+
+// Reads from cookie (set by server) so there's no flash on SSR.
+// Falls back to dark mode if no cookie is found.
+// Cookie 없으면 light가 기본값 (쿠키가 있으면 그 값에 따름)
+const THEME_SCRIPT = `(function(){try{var c=document.cookie.split('; ').find(function(r){return r.startsWith('theme=')});var t=c?c.split('=')[1]:null;if(t==='dark'){document.documentElement.classList.add('dark')}else{document.documentElement.classList.remove('dark')}}catch(e){}})()`;
+
+export { THEME_SCRIPT };
+
+function setCookieTheme(dark: boolean) {
+  try {
+    document.cookie = `theme=${dark ? "dark" : "light"};path=/;max-age=31536000;SameSite=Lax`;
+  } catch {}
+}
+
+function useDarkMode(controlled?: boolean): [boolean, () => void] {
+  const [dark, setDark] = useState(() =>
+    typeof document !== "undefined"
+      ? document.documentElement.classList.contains("dark")
+      : false
+  );
+
+  useEffect(() => {
+    if (controlled !== undefined) return;
+    // SSR에서는 document가 없어 초기값이 틀릴 수 있으므로 mount 시 DOM과 동기화
+    setDark(document.documentElement.classList.contains("dark"));
+    const observer = new MutationObserver(() => {
+      setDark(document.documentElement.classList.contains("dark"));
+    });
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+    return () => observer.disconnect();
+  }, [controlled]);
+
+  function toggle() {
+    const next = !dark;
+    document.documentElement.classList.toggle("dark", next);
+    setCookieTheme(next);
+    setDark(next);
+  }
+
+  return [controlled !== undefined ? controlled : dark, toggle];
+}
 
 export interface ThemeButtonProps {
   color: string;
@@ -12,7 +53,8 @@ export interface ThemeButtonProps {
 /**
  * Single circular button split diagonally — half dark/light, half theme color.
  */
-export function ThemeButton({ color, dark = false, onClick, className = "" }: ThemeButtonProps) {
+export function ThemeButton({ color, dark: darkProp, onClick, className = "" }: ThemeButtonProps) {
+  const [dark] = useDarkMode(darkProp);
   const monoColor = dark ? "#000" : "#fff";
   const monoStroke = dark ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.12)";
 
@@ -55,10 +97,17 @@ export function ThemeDialog({
   onClose,
   current,
   onSelect,
-  dark = false,
+  dark: darkProp,
   onDarkToggle,
   palette = colors,
 }: ThemeDialogProps) {
+  const [dark, toggleDark] = useDarkMode(darkProp);
+
+  function handleDarkToggle() {
+    if (onDarkToggle) onDarkToggle();
+    else toggleDark();
+  }
+
   useEffect(() => {
     if (!open) return;
     const handler = (e: KeyboardEvent) => {
@@ -82,8 +131,7 @@ export function ThemeDialog({
         <div className="px-4 pt-4 pb-3">
           <p className="text-sm font-bold text-zinc-900 dark:text-white mb-3">테마</p>
 
-          {onDarkToggle && (
-            <div className="flex gap-2 mb-4">
+          <div className="flex gap-2 mb-4">
               {[
                 { label: "라이트", isDark: false },
                 { label: "다크", isDark: true },
@@ -92,7 +140,7 @@ export function ThemeDialog({
                 return (
                   <button
                     key={mode.label}
-                    onClick={() => { if (!active) onDarkToggle(); }}
+                    onClick={() => { if (!active) handleDarkToggle(); }}
                     className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-2xl transition-all ${
                       active
                         ? "bg-zinc-900 dark:bg-white ring-2 ring-zinc-900 dark:ring-white ring-offset-2 ring-offset-white dark:ring-offset-zinc-900"
@@ -120,7 +168,6 @@ export function ThemeDialog({
                 );
               })}
             </div>
-          )}
         </div>
 
         <div className="px-4 pb-3 grid grid-cols-5 gap-3 justify-items-center">
