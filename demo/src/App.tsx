@@ -106,7 +106,7 @@ function HomeTab({ themeColor }: { themeColor: string }) {
       <Section className="mt-4">
         <div className="flex gap-2">
           <a
-            href="https://github.com/yoo-minho/m1kapp-ui"
+            href="https://github.com/m1kapp/ui"
             target="_blank"
             rel="noopener noreferrer"
             className="flex-1 py-2.5 rounded-xl bg-zinc-900 dark:bg-zinc-800 text-center text-sm font-semibold text-white transition-colors hover:bg-zinc-800 dark:hover:bg-zinc-700 ring-1 ring-white/10"
@@ -571,7 +571,7 @@ function CodeTab() {
         <SectionHeader>링크</SectionHeader>
         <div className="space-y-2">
           {[
-            { label: "GitHub Repository", url: "https://github.com/yoo-minho/m1kapp-ui" },
+            { label: "GitHub Repository", url: "https://github.com/m1kapp/ui" },
             { label: "npm Package", url: "https://www.npmjs.com/package/@m1kapp/ui" },
             { label: "m1k.app", url: "https://m1k.app" },
           ].map((link) => (
