@@ -18,27 +18,26 @@ import {
   EmojiPicker,
   Tooltip,
   Typewriter,
+  GrassMap,
   fontFamily,
 } from "@m1kapp/ui";
 
 const THEMES = Object.entries(colors).map(([name, color]) => ({ name, color }));
 
-const COMPONENTS = [
-  { name: "Watermark", desc: "배경 패턴이 반복되는 컬러 배경" },
-  { name: "AppShell", desc: "둥근 모서리 + 그림자의 모바일 앱 컨테이너" },
-  { name: "AppShellHeader", desc: "블러 배경의 상단 고정 헤더" },
-  { name: "AppShellContent", desc: "스크롤 가능한 메인 콘텐츠 영역" },
-  { name: "TabBar", desc: "하단 고정 네비게이션 바" },
-  { name: "Tab", desc: "아이콘 + 라벨 탭 버튼" },
-  { name: "Section", desc: "패딩이 적용된 섹션 래퍼" },
-  { name: "SectionHeader", desc: "작은 대문자 섹션 제목" },
-  { name: "Divider", desc: "구분선" },
-  { name: "StatChip", desc: "라벨 + 숫자 통계 칩" },
-  { name: "EmptyState", desc: "아이콘 + 메시지 빈 상태" },
-  { name: "ThemeButton", desc: "헤더용 원형 컬러 버튼" },
-  { name: "ThemeDialog", desc: "바텀시트 컬러 피커" },
-  { name: "Typewriter", desc: "사람처럼 뚜닥뚜닥 타이핑 효과" },
-];
+function makeGrassData() {
+  const data: { date: string; count: number }[] = [];
+  const today = new Date();
+  for (let i = 364; i >= 0; i--) {
+    const d = new Date(today);
+    d.setDate(d.getDate() - i);
+    const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+    const roll = Math.random();
+    data.push({ date: key, count: roll > 0.55 ? Math.floor(Math.random() * 80) + 1 : 0 });
+  }
+  return data;
+}
+const GRASS_DATA = makeGrassData();
+
 
 const CODE_SNIPPET = `import {
   Watermark, AppShell,
@@ -83,7 +82,7 @@ function HomeTab({ themeColor }: { themeColor: string }) {
             @m1kapp/ui
           </h1>
           <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-500">
-            v0.1.4
+            v0.1.16
           </span>
         </div>
         <p className="text-lg mt-3 min-h-7">
@@ -139,7 +138,7 @@ function HomeTab({ themeColor }: { themeColor: string }) {
       <Section>
         <SectionHeader>한눈에 보기</SectionHeader>
         <div className="flex gap-3">
-          <StatChip label="컴포넌트" value={14} />
+          <StatChip label="컴포넌트" value={15} />
           <StatChip label="KB (gzip)" value={2} />
           <StatChip label="의존성" value={0} />
         </div>
@@ -421,6 +420,14 @@ function ComponentsTab({ themeColor, dark, onThemeSelect }: { themeColor: string
           </ComponentCard>
 
           <ComponentCard
+            name="GrassMap"
+            desc="GitHub-style activity heatmap with year filter and tooltip"
+            code={`<GrassMap\n  data={[{ date: "2025-01-01", count: 42 }, ...]}\n  accent="${themeColor}"\n  isDark={dark}\n  unit="명"\n/>`}
+          >
+            <GrassMap data={GRASS_DATA} accent={themeColor} isDark={dark} />
+          </ComponentCard>
+
+          <ComponentCard
             name="Typewriter"
             desc="Human-like typing effect with blinking cursor"
             code={`<Typewriter\n  words={["Hello", "World", "Side Project"]}\n  color="#3b82f6"\n  speed={80}\n/>`}
@@ -593,7 +600,7 @@ function CodeTab() {
 /* ── Main App ── */
 export default function App() {
   const [tab, setTab] = useState("home");
-  const [themeColor, setThemeColor] = useState(colors.blue);
+  const [themeColor, setThemeColor] = useState<string>(colors.blue);
   const [themeOpen, setThemeOpen] = useState(false);
   const [dark, setDark] = useState(() =>
     typeof window !== "undefined" &&
