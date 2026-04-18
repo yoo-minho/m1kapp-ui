@@ -21,7 +21,7 @@ export interface SectionHeaderProps {
  */
 export function SectionHeader({ children }: SectionHeaderProps) {
   return (
-    <h2 className="text-[11px] font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider mb-3">
+    <h2 className="text-[11px] font-semibold text-zinc-400 dark:text-zinc-500 uppercase mb-3">
       {children}
     </h2>
   );

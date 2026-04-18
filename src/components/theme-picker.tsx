@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 import { colors } from "./colors";
 
@@ -15,32 +15,26 @@ function setCookieTheme(dark: boolean) {
   } catch {}
 }
 
+const isDarkSnapshot = () => document.documentElement.classList.contains("dark");
+const isDarkServer = () => false;
+
+function subscribeDark(cb: () => void) {
+  const observer = new MutationObserver(cb);
+  observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+  return () => observer.disconnect();
+}
+
 function useDarkMode(controlled?: boolean): [boolean, () => void] {
-  const [dark, setDark] = useState(() =>
-    typeof document !== "undefined"
-      ? document.documentElement.classList.contains("dark")
-      : false
-  );
+  const synced = useSyncExternalStore(subscribeDark, isDarkSnapshot, isDarkServer);
+  const dark = controlled !== undefined ? controlled : synced;
 
-  useEffect(() => {
-    if (controlled !== undefined) return;
-    // SSR에서는 document가 없어 초기값이 틀릴 수 있으므로 mount 시 DOM과 동기화
-    setDark(document.documentElement.classList.contains("dark"));
-    const observer = new MutationObserver(() => {
-      setDark(document.documentElement.classList.contains("dark"));
-    });
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
-    return () => observer.disconnect();
-  }, [controlled]);
-
-  function toggle() {
+  const toggle = useCallback(() => {
     const next = !dark;
     document.documentElement.classList.toggle("dark", next);
     setCookieTheme(next);
-    setDark(next);
-  }
+  }, [dark]);
 
-  return [controlled !== undefined ? controlled : dark, toggle];
+  return [dark, toggle];
 }
 
 export interface ThemeButtonProps {
