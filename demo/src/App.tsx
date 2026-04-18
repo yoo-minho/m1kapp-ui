@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+
+declare const __PKG_VERSION__: string;
 import {
   Watermark,
   AppShell,
@@ -74,6 +76,14 @@ export default function App() {
 
 /* ── Tab: Home ── */
 function HomeTab({ themeColor }: { themeColor: string }) {
+  const [installCopied, setInstallCopied] = useState(false);
+
+  function handleInstallCopy() {
+    navigator.clipboard.writeText("npm install @m1kapp/ui");
+    setInstallCopied(true);
+    setTimeout(() => setInstallCopied(false), 2000);
+  }
+
   return (
     <>
       <Section className="pt-5">
@@ -82,7 +92,7 @@ function HomeTab({ themeColor }: { themeColor: string }) {
             @m1kapp/ui
           </h1>
           <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-500">
-            v0.1.16
+            v{__PKG_VERSION__}
           </span>
         </div>
         <p className="text-lg mt-3 min-h-7">
@@ -114,10 +124,10 @@ function HomeTab({ themeColor }: { themeColor: string }) {
             GitHub
           </a>
           <button
-            onClick={() => navigator.clipboard.writeText("npm install @m1kapp/ui")}
+            onClick={handleInstallCopy}
             className="flex-1 py-2.5 rounded-xl text-center text-sm font-medium font-mono text-zinc-600 dark:text-zinc-400 bg-zinc-100 dark:bg-zinc-900 transition-colors hover:bg-zinc-200 dark:hover:bg-zinc-800 ring-1 ring-zinc-200 dark:ring-white/10"
           >
-            npm i @m1kapp/ui
+            {installCopied ? "Copied!" : "npm i @m1kapp/ui"}
           </button>
         </div>
       </Section>
@@ -138,7 +148,7 @@ function HomeTab({ themeColor }: { themeColor: string }) {
       <Section>
         <SectionHeader>한눈에 보기</SectionHeader>
         <div className="flex gap-3">
-          <StatChip label="컴포넌트" value={15} />
+          <StatChip label="컴포넌트" value={18} />
           <StatChip label="KB (gzip)" value={2} />
           <StatChip label="의존성" value={0} />
         </div>
@@ -448,6 +458,25 @@ function ComponentsTab({ themeColor, dark, onThemeSelect }: { themeColor: string
         <SectionHeader>유틸리티</SectionHeader>
         <div className="space-y-3">
           <ComponentCard
+            name="Tooltip"
+            desc="호버 시 라벨을 보여주는 툴팁"
+            code={`<Tooltip label="설명 텍스트">\n  <button>hover me</button>\n</Tooltip>`}
+          >
+            <div className="flex gap-3 justify-center py-2">
+              {(["🌟 별", "🚀 로켓", "🎯 타겟"] as const).map((item) => {
+                const [em, label] = item.split(" ");
+                return (
+                  <Tooltip key={em} label={label}>
+                    <div className="w-10 h-10 rounded-full bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center text-xl cursor-pointer hover:scale-110 transition-transform">
+                      {em}
+                    </div>
+                  </Tooltip>
+                );
+              })}
+            </div>
+          </ComponentCard>
+
+          <ComponentCard
             name="colors"
             desc="Curated color palette for Watermark and Tab"
             code={`import { colors } from "@m1kapp/ui";\n\n<Watermark color={colors.blue} />\n<Tab activeColor={colors.pink} />\n\n// All colors:\n// blue, purple, green, orange, pink,\n// red, yellow, cyan, slate, zinc`}
@@ -622,7 +651,7 @@ export default function App() {
             <ThemeButton color={themeColor} dark={dark} onClick={() => setThemeOpen(true)} />
           </AppShellHeader>
 
-          <AppShellContent>
+          <AppShellContent key={tab}>
             {tab === "home" && <HomeTab themeColor={themeColor} />}
             {tab === "components" && <ComponentsTab themeColor={themeColor} dark={dark} onThemeSelect={setThemeColor} />}
             {tab === "code" && <CodeTab />}
