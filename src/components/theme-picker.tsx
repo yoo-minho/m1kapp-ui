@@ -38,34 +38,69 @@ function useDarkMode(controlled?: boolean): [boolean, () => void] {
 }
 
 export interface ThemeButtonProps {
-  color: string;
+  /** Accent color for the diagonal split. Omit to show moon/sun icon instead. */
+  color?: string;
   dark?: boolean;
   onClick: () => void;
   className?: string;
 }
 
 /**
- * Single circular button split diagonally — half dark/light, half theme color.
+ * Circular theme toggle button.
+ * - With `color`: split diagonally — half dark/light, half theme color.
+ * - Without `color`: moon (light mode) or sun (dark mode) icon.
  */
 export function ThemeButton({ color, dark: darkProp, onClick, className = "" }: ThemeButtonProps) {
   const [dark] = useDarkMode(darkProp);
   const monoColor = dark ? "#000" : "#fff";
   const monoStroke = dark ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.12)";
+  const iconColor = dark ? "#fff" : "#000";
 
   return (
     <button
       onClick={onClick}
       className={`w-7 h-7 rounded-full transition-all active:scale-90 hover:scale-110 overflow-hidden cursor-pointer ${className}`}
-      style={{ boxShadow: `0 2px 10px ${color}55` }}
+      style={{ boxShadow: color ? `0 2px 10px ${color}55` : undefined }}
       title="Theme"
     >
       <svg width="100%" height="100%" viewBox="0 0 100 100">
-        {/* top-left: mono */}
-        <path d="M0 0 L100 0 L0 100 Z" fill={monoColor} />
-        {/* bottom-right: theme color */}
-        <path d="M100 0 L100 100 L0 100 Z" fill={color} />
-        {/* border */}
-        <circle cx="50" cy="50" r="49" fill="none" stroke={monoStroke} strokeWidth="2" />
+        {color ? (
+          <>
+            {/* top-left: mono */}
+            <path d="M0 0 L100 0 L0 100 Z" fill={monoColor} />
+            {/* bottom-right: theme color */}
+            <path d="M100 0 L100 100 L0 100 Z" fill={color} />
+            {/* border */}
+            <circle cx="50" cy="50" r="49" fill="none" stroke={monoStroke} strokeWidth="2" />
+          </>
+        ) : (
+          <>
+            {/* background */}
+            <circle cx="50" cy="50" r="50" fill={monoColor} />
+            {/* border */}
+            <circle cx="50" cy="50" r="49" fill="none" stroke={monoStroke} strokeWidth="2" />
+            {dark ? (
+              /* sun icon */
+              <g fill={iconColor}>
+                <circle cx="50" cy="50" r="14" />
+                {[0, 45, 90, 135, 180, 225, 270, 315].map((deg) => {
+                  const rad = (deg * Math.PI) / 180;
+                  const x1 = 50 + Math.cos(rad) * 22;
+                  const y1 = 50 + Math.sin(rad) * 22;
+                  const x2 = 50 + Math.cos(rad) * 30;
+                  const y2 = 50 + Math.sin(rad) * 30;
+                  return <line key={deg} x1={x1} y1={y1} x2={x2} y2={y2} stroke={iconColor} strokeWidth="6" strokeLinecap="round" />;
+                })}
+              </g>
+            ) : (
+              /* moon icon — crescent via clip */
+              <path
+                d="M55 22 A28 28 0 1 0 55 78 A18 18 0 1 1 55 22 Z"
+                fill={iconColor}
+              />
+            )}
+          </>
+        )}
       </svg>
     </button>
   );

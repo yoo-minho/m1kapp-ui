@@ -511,11 +511,17 @@ function ComponentsTab({ themeColor, dark, onThemeSelect }: { themeColor: string
           <ComponentCard
             name="ThemeButton + ThemeDialog"
             desc="Header color button with bottom-sheet picker"
-            code={`import { ThemeButton, ThemeDialog, colors } from "@m1kapp/ui";\n\nconst [open, setOpen] = useState(false);\nconst [color, setColor] = useState(colors.blue);\n\n<AppShellHeader>\n  <span>myapp</span>\n  <ThemeButton\n    color={color}\n    onClick={() => setOpen(true)}\n  />\n</AppShellHeader>\n\n<ThemeDialog\n  open={open}\n  onClose={() => setOpen(false)}\n  current={color}\n  onSelect={setColor}\n/>`}
+            code={`import { ThemeButton, ThemeDialog, colors } from "@m1kapp/ui";\n\nconst [open, setOpen] = useState(false);\nconst [color, setColor] = useState(colors.blue);\n\n// 테마 색상 있음 — 대각선 스플릿\n<ThemeButton color={color} onClick={() => setOpen(true)} />\n\n// 테마 색상 없음 — 달/해 아이콘\n<ThemeButton onClick={toggleDark} />\n\n<ThemeDialog\n  open={open}\n  onClose={() => setOpen(false)}\n  current={color}\n  onSelect={setColor}\n/>`}
           >
-            <div className="flex items-center justify-between">
-              <span className="text-xs text-zinc-500">Tap the button →</span>
-              <ThemeButton color={themeColor} dark={dark} onClick={() => {}} />
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center justify-between">
+                <span className="text-xs text-zinc-500">color 있음 (대각선 스플릿)</span>
+                <ThemeButton color={themeColor} dark={dark} onClick={() => {}} />
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-xs text-zinc-500">color 없음 (달/해)</span>
+                <ThemeButton dark={dark} onClick={() => {}} />
+              </div>
             </div>
           </ComponentCard>
 

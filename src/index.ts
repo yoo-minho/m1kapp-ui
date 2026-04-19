@@ -1,5 +1,8 @@
 import "./inject-styles";
 
+export { Button } from "./components/button";
+export type { ButtonProps } from "./components/button";
+
 export { AppShell, AppShellHeader, AppShellContent } from "./components/app-shell";
 export type { AppShellProps, AppShellHeaderProps, AppShellContentProps } from "./components/app-shell";
 
