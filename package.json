@@ -19,7 +19,7 @@
     "build": "mkdir -p .tmp && npx @tailwindcss/cli -i src/styles.css -o .tmp/styles.css --minify && node scripts/embed-css.mjs && tsup",
     "dev": "tsup --watch",
     "lint": "tsc --noEmit",
-    "demo": "cd demo && npm run dev",
+    "demo": "npm run build && cd demo && npm run dev",
     "demo:build": "cd demo && npm run build"
   },
   "peerDependencies": {

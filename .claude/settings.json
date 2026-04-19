@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm i *)",
+      "Bash(npm config *)",
+      "Read(//Users/minho/**)",
+      "Bash(git check-ignore *)"
+    ]
+  }
+}
